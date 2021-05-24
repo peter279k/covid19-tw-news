@@ -1,6 +1,6 @@
 <template>
   <input id="covid19_data" type="hidden" value="">
-  <Index message="COVID-19 台灣消息" title="這是台灣COVID-19 訊息" filter="送出" home="首頁"/>
+  <Index message="COVID-19 台灣消息" title="這是台灣COVID-19 訊息" filter="送出" home="首頁" v-bind:covid19Data="covid19Data"/>
 </template>
 
 <script>
@@ -19,7 +19,6 @@ export default {
   },
   mounted() {
     this.covid19Data = covid19Data;
-    document.getElementById('covid19_data').setAttribute('value', JSON.stringify(this.covid19Data));
   },
 }
 </script>

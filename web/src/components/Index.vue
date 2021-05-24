@@ -52,36 +52,34 @@ export default {
     title: String,
     filter: String,
     home: String,
+    covid19Data: Object,
   },
   mounted() {
-    document.onreadystatechange = () => {
-      if (document.readyState === "complete") {
-        console.log('DOM Page loaded completely!')
-        let covid19DataArray = JSON.parse(document.getElementById('covid19_data').getAttribute('value'));
-        let addDaySecond = 86400000;
-        let tmpMonth = 0;
-        let date = new Date();
-        tmpMonth = date.getMonth() + 1;
-        if (String(tmpMonth).length === 1) {
-          tmpMonthStr = '0' + tmpMonth;
-        }
-        let startDateStr = date.getFullYear() + '-' + tmpMonthStr + '-' + date.getDate();
-        let startDate = new Date(startDateStr);
-        let currentDate = startDate.getTime();
-        if (covid19DataArray[startDateStr] === undefined) {
-          currentDate -= addDaySecond;
-          startDate = new Date(currentDate);
-          tmpMonth = startDate.getMonth() + 1;
-          if (String(tmpMonth).length === 1) {
-            tmpMonthStr = '0' + tmpMonth;
-          }
-          startDateStr = startDate.getFullYear() + '-' + tmpMonthStr + '-' + startDate.getDate();
-        }
-        let tmpMonthStr = '';
-        let counter = 1;
-        let rowEle = '<tr>';
-        let rowModalEle = '';
-        let rowModalTemplate = `
+    let covid19DataArray = this.covid19Data;
+    let addDaySecond = 86400000;
+    let tmpMonth = 0;
+    let date = new Date();
+    tmpMonth = date.getMonth() + 1;
+    if (String(tmpMonth).length === 1) {
+      tmpMonthStr = '0' + tmpMonth;
+    }
+    let startDateStr = date.getFullYear() + '-' + tmpMonthStr + '-' + date.getDate();
+    let startDate = new Date(startDateStr);
+    let currentDate = startDate.getTime();
+    if (covid19DataArray[startDateStr] === undefined) {
+      currentDate -= addDaySecond;
+      startDate = new Date(currentDate);
+      tmpMonth = startDate.getMonth() + 1;
+      if (String(tmpMonth).length === 1) {
+        tmpMonthStr = '0' + tmpMonth;
+      }
+      startDateStr = startDate.getFullYear() + '-' + tmpMonthStr + '-' + startDate.getDate();
+    }
+    let tmpMonthStr = '';
+    let counter = 1;
+    let rowEle = '<tr>';
+    let rowModalEle = '';
+    let rowModalTemplate = `
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -97,48 +95,46 @@ export default {
           </div>
         </div>`;
 
-        rowModalEle = rowModalTemplate;
-        let rowListGropus = '<ol class="list-group list-group-numbered">';
-        let county = '';
-        let countyCounter = 0;
-        while(covid19DataArray[startDateStr] !== undefined) {
-          rowEle += '<th scope="row">' + counter + '</th>';
-          rowEle += '<td>' + startDateStr + '</td>';
-          rowEle += '<td>' + covid19DataArray[startDateStr]['title'] + '</td>';
-          rowEle += '<td>' + covid19DataArray[startDateStr]['confirmed_total_counts'] + '</td>';
-          rowEle += '<td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#' + 'Modal'+ startDateStr.replace(/-/g, '') + '">' + '點我' + '</button></td>';
-          rowEle += '<td><a target="_blank" href="' + covid19DataArray[startDateStr]['link'] + '" class="link-info">' + '點我' + '</a></td>';
+    rowModalEle = rowModalTemplate;
+    let rowListGropus = '<ol class="list-group list-group-numbered">';
+    let county = '';
+    let countyCounter = 0;
+    while(covid19DataArray[startDateStr] !== undefined) {
+      rowEle += '<th scope="row">' + counter + '</th>';
+      rowEle += '<td>' + startDateStr + '</td>';
+      rowEle += '<td>' + covid19DataArray[startDateStr]['title'] + '</td>';
+      rowEle += '<td>' + covid19DataArray[startDateStr]['confirmed_total_counts'] + '</td>';
+      rowEle += '<td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#' + 'Modal'+ startDateStr.replace(/-/g, '') + '">' + '點我' + '</button></td>';
+      rowEle += '<td><a target="_blank" href="' + covid19DataArray[startDateStr]['link'] + '" class="link-info">' + '點我' + '</a></td>';
 
-          for (var index=0;index<covid19DataArray[startDateStr]['confirmed_case_texts'].length; index++) {
-            county = covid19DataArray[startDateStr]['confirmed_case_texts'][index].substring(0, 3);
-            countyCounter = covid19DataArray[startDateStr]['confirmed_counts'][index];
-            rowListGropus += '<li class="list-group-item d-flex justify-content-between align-items-start">';
-            rowListGropus += '<div class="ms-2 me-auto"><div class="fw-bold">'+ county + '</div></div><span class="badge bg-primary rounded-pill">' + countyCounter + '</span>';
-            rowListGropus += '</li>';
-          }
-
-          rowModalEle = rowModalEle.replace('exampleModal', 'Modal' + startDateStr.replace(/-/g, ''));
-          rowModalEle = rowModalEle.replace(/exampleModalLabel/g, 'ModalLabel' + startDateStr.replace(/-/g, ''));
-          rowModalEle = rowModalEle.replace('modal_body', rowListGropus + '</ol>');
-          document.getElementById('main-block').insertAdjacentHTML('beforeend', rowModalEle);
-
-          currentDate -= addDaySecond;
-          startDate = new Date(currentDate);
-
-          tmpMonth = startDate.getMonth() + 1;
-          if (String(tmpMonth).length === 1) {
-            tmpMonthStr = '0' + tmpMonth;
-          }
-          counter += 1;
-          rowEle += '<tr>';
-          rowListGropus = '<ol class="list-group list-group-numbered">';
-          rowModalEle = rowModalTemplate;
-          startDateStr = startDate.getFullYear() + '-' + tmpMonthStr + '-' + startDate.getDate();
-        }
-
-        document.getElementById('covid19-data-rows').innerHTML = rowEle;
+      for (var index=0;index<covid19DataArray[startDateStr]['confirmed_case_texts'].length; index++) {
+        county = covid19DataArray[startDateStr]['confirmed_case_texts'][index].substring(0, 3);
+        countyCounter = covid19DataArray[startDateStr]['confirmed_counts'][index];
+        rowListGropus += '<li class="list-group-item d-flex justify-content-between align-items-start">';
+        rowListGropus += '<div class="ms-2 me-auto"><div class="fw-bold">'+ county + '</div></div><span class="badge bg-primary rounded-pill">' + countyCounter + '</span>';
+        rowListGropus += '</li>';
       }
-    };
+
+      rowModalEle = rowModalEle.replace('exampleModal', 'Modal' + startDateStr.replace(/-/g, ''));
+      rowModalEle = rowModalEle.replace(/exampleModalLabel/g, 'ModalLabel' + startDateStr.replace(/-/g, ''));
+      rowModalEle = rowModalEle.replace('modal_body', rowListGropus + '</ol>');
+      document.getElementById('main-block').insertAdjacentHTML('beforeend', rowModalEle);
+
+      currentDate -= addDaySecond;
+      startDate = new Date(currentDate);
+
+      tmpMonth = startDate.getMonth() + 1;
+      if (String(tmpMonth).length === 1) {
+        tmpMonthStr = '0' + tmpMonth;
+      }
+      counter += 1;
+      rowEle += '<tr>';
+      rowListGropus = '<ol class="list-group list-group-numbered">';
+      rowModalEle = rowModalTemplate;
+      startDateStr = startDate.getFullYear() + '-' + tmpMonthStr + '-' + startDate.getDate();
+    }
+
+    document.getElementById('covid19-data-rows').innerHTML = rowEle;
   },
 }
 </script>
