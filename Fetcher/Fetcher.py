@@ -102,7 +102,7 @@ def fetch_daily_footprint():
 
             footprint_lists[date] = {
                 'link': links[index],
-                'title': titles[index],
+                'title': titles[index][5:],
                 'confirmed_case_texts': new_texts,
                 'confirmed_counts': confirmed_counts,
                 'confirmed_total_counts': confirmed_total_counts,
