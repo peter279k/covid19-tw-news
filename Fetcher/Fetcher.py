@@ -101,7 +101,11 @@ def fetch_daily_footprint():
                 new_texts.append(case_text)
 
             footprint_lists[date] = {
+                'index': index + 1,
+                'date': date,
                 'link': links[index],
+                'modal': '#Modal' + date.replace('-', ''),
+                'modal_id': 'Modal' + date.replace('-', ''),
                 'title': titles[index][5:],
                 'confirmed_case_texts': new_texts,
                 'confirmed_counts': confirmed_counts,

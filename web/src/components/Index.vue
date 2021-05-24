@@ -34,12 +34,40 @@
               <th scope="col">相關連結</th>
             </tr>
           </thead>
-          <tbody id="covid19-data-rows"></tbody>
+          <tbody id="covid19-data-rows">
+            <tr v-for="data in covid19Data" :key="data">
+              <th scope="row">{{ data.index }}</th>
+              <td>{{ data.date }}</td>
+              <td>{{ data.title }}</td>
+              <td>{{ data.confirmed_total_counts }}</td>
+              <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" v-bind:data-bs-target="data.modal">點我</button></td>
+              <td><a target="_blank" v-bind:href="data.link" class="link-info">點我</a></td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>
   </div>
-  <span id="Modal20210530"></span>
+  <div v-for="data in covid19Data" :key="data" class="modal fade" v-bind:id="data.modal_id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">當日各縣市確診總人數</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+      <div class="modal-body">
+        <ol class="list-group list-group-numbered">
+          <li v-for="(confirmedCounts, index) in data.confirmed_counts" :key="confirmedCounts" class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto"><div class="fw-bold">{{ data.confirmed_case_texts[index].substring(0, 3) }}</div></div><span class="badge bg-primary rounded-pill">{{ confirmedCounts }}</span>
+          </li>
+        </ol>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+    </div>
+  </div>
 </main>
 </template>
 
@@ -55,86 +83,6 @@ export default {
     covid19Data: Object,
   },
   mounted() {
-    let covid19DataArray = this.covid19Data;
-    let addDaySecond = 86400000;
-    let tmpMonth = 0;
-    let date = new Date();
-    tmpMonth = date.getMonth() + 1;
-    if (String(tmpMonth).length === 1) {
-      tmpMonthStr = '0' + tmpMonth;
-    }
-    let startDateStr = date.getFullYear() + '-' + tmpMonthStr + '-' + date.getDate();
-    let startDate = new Date(startDateStr);
-    let currentDate = startDate.getTime();
-    if (covid19DataArray[startDateStr] === undefined) {
-      currentDate -= addDaySecond;
-      startDate = new Date(currentDate);
-      tmpMonth = startDate.getMonth() + 1;
-      if (String(tmpMonth).length === 1) {
-        tmpMonthStr = '0' + tmpMonth;
-      }
-      startDateStr = startDate.getFullYear() + '-' + tmpMonthStr + '-' + startDate.getDate();
-    }
-    let tmpMonthStr = '';
-    let counter = 1;
-    let rowEle = '<tr>';
-    let rowModalEle = '';
-    let rowModalTemplate = `
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">當日各縣市確診總人數</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">modal_body</div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-          </div>
-          </div>
-        </div>`;
-
-    rowModalEle = rowModalTemplate;
-    let rowListGropus = '<ol class="list-group list-group-numbered">';
-    let county = '';
-    let countyCounter = 0;
-    while(covid19DataArray[startDateStr] !== undefined) {
-      rowEle += '<th scope="row">' + counter + '</th>';
-      rowEle += '<td>' + startDateStr + '</td>';
-      rowEle += '<td>' + covid19DataArray[startDateStr]['title'] + '</td>';
-      rowEle += '<td>' + covid19DataArray[startDateStr]['confirmed_total_counts'] + '</td>';
-      rowEle += '<td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#' + 'Modal'+ startDateStr.replace(/-/g, '') + '">' + '點我' + '</button></td>';
-      rowEle += '<td><a target="_blank" href="' + covid19DataArray[startDateStr]['link'] + '" class="link-info">' + '點我' + '</a></td>';
-
-      for (var index=0;index<covid19DataArray[startDateStr]['confirmed_case_texts'].length; index++) {
-        county = covid19DataArray[startDateStr]['confirmed_case_texts'][index].substring(0, 3);
-        countyCounter = covid19DataArray[startDateStr]['confirmed_counts'][index];
-        rowListGropus += '<li class="list-group-item d-flex justify-content-between align-items-start">';
-        rowListGropus += '<div class="ms-2 me-auto"><div class="fw-bold">'+ county + '</div></div><span class="badge bg-primary rounded-pill">' + countyCounter + '</span>';
-        rowListGropus += '</li>';
-      }
-
-      rowModalEle = rowModalEle.replace('exampleModal', 'Modal' + startDateStr.replace(/-/g, ''));
-      rowModalEle = rowModalEle.replace(/exampleModalLabel/g, 'ModalLabel' + startDateStr.replace(/-/g, ''));
-      rowModalEle = rowModalEle.replace('modal_body', rowListGropus + '</ol>');
-      document.getElementById('main-block').insertAdjacentHTML('beforeend', rowModalEle);
-
-      currentDate -= addDaySecond;
-      startDate = new Date(currentDate);
-
-      tmpMonth = startDate.getMonth() + 1;
-      if (String(tmpMonth).length === 1) {
-        tmpMonthStr = '0' + tmpMonth;
-      }
-      counter += 1;
-      rowEle += '<tr>';
-      rowListGropus = '<ol class="list-group list-group-numbered">';
-      rowModalEle = rowModalTemplate;
-      startDateStr = startDate.getFullYear() + '-' + tmpMonthStr + '-' + startDate.getDate();
-    }
-
-    document.getElementById('covid19-data-rows').innerHTML = rowEle;
   },
 }
 </script>
