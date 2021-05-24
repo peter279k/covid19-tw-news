@@ -1,0 +1,31 @@
+name: Update CSV Dataset Records from Taiwan CDC website
+
+on:
+  schedule:
+    - cron: '0 15,20,23 * * *'
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get working copy
+        uses: actions/checkout@master
+        with:
+          fetch-depth: 1
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - name: Install Requirements
+        run: pip install -r requirements.txt
+      - name: Update COVD-19 News
+        run: python Fetcher/Fetcher.py
+      - name: Commit and push if it changed
+        run: |
+          git config user.name "peter279k"
+          git config user.email "peter279k@gmail.com"
+          git add -A
+          timestamp=$(date -u)
+          git commit -m "Last Commit: ${timestamp}(TW)" || exit 0
+          git push origin master
