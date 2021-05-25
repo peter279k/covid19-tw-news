@@ -21,6 +21,8 @@ jobs:
         run: pip install -r requirements.txt
       - name: Update COVD-19 News
         run: python Fetcher/Fetcher.py
+      - name: Copy JSON files to assets folder
+        run: cp datasets/*.json web/src/assets/
       - name: Commit and push if it changed
         run: |
           git config user.name "peter279k"
