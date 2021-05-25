@@ -2,7 +2,7 @@ name: Update CSV Dataset Records from Taiwan CDC website
 
 on:
   schedule:
-    - cron: '0 15,20,23 * * *'
+    - cron: '0 7,12,15 * * *'
   workflow_dispatch:
 
 jobs:
