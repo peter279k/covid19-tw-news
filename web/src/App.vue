@@ -1,5 +1,4 @@
 <template>
-  <input id="covid19_data" type="hidden" value="">
   <Index message="COVID-19 台灣消息" title="這是台灣COVID-19 訊息" filter="送出" home="首頁" v-bind:covid19Data="covid19Data"/>
 </template>
 
