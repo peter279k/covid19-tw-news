@@ -3,6 +3,7 @@
 <main id="main-block" class="flex-shrink-0">
   <div class="container">
     <h1 class="mt-5">{{ title }}</h1>
+    <input v-model="filter" type="search" class="form-control" id="input_keywords" placeholder="請輸入關鍵字"/>
     <div class="row">
       <div id="covid-19-table" class="col">
         <table class="table table-striped">
@@ -17,7 +18,7 @@
             </tr>
           </thead>
           <tbody id="covid19-data-rows">
-            <tr v-for="data in covid19Data" :key="data">
+            <tr v-for="data in filteredTable" :key="data">
               <th scope="row">{{ data.index }}</th>
               <td>{{ data.date }}</td>
               <td>{{ data.title }}</td>
@@ -30,7 +31,7 @@
       </div>
     </div>
   </div>
-  <div v-for="data in covid19Data" :key="data" class="modal fade" v-bind:id="data.modal_id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div v-for="data in filteredTable" :key="data" class="modal fade" v-bind:id="data.modal_id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -66,7 +67,27 @@ export default {
   data() {
     return {
       title: '這是台灣COVID-19 訊息',
+      filter: '',
     };
+  },
+  computed: {
+    filteredTable() {
+      if (this.filter === '') {
+        return this.covid19Data;
+      }
+      let results = {};
+      for (var dateIndex in this.covid19Data) {
+        if (dateIndex.includes(this.filter)) {
+          results[dateIndex] = this.covid19Data[dateIndex];
+          continue;
+        }
+        if (this.covid19Data[dateIndex].title.includes(this.filter)) {
+          results[dateIndex] = this.covid19Data[dateIndex];
+          continue;
+        }
+      }
+      return results;
+    },
   },
 }
 </script>

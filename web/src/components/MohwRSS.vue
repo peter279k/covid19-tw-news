@@ -3,6 +3,7 @@
   <main id="main-block" class="flex-shrink-0">
   <div class="container">
     <h1 class="mt-5">{{ title }}</h1>
+    <input v-model="filter" type="search" class="form-control" id="input_keywords" placeholder="請輸入關鍵字"/>
     <div class="row">
       <div id="covid-19-table" class="col">
         <table class="table">
@@ -16,7 +17,7 @@
             </tr>
           </thead>
           <tbody id="covid19-data-rows">
-            <tr v-for="data in mohwRSS" :key="data">
+            <tr v-for="data in filteredTable" :key="data">
               <template v-if="data.title.indexOf('指揮中心公布新增') !== -1">
                 <td class="table-primary">{{ new Date(data.pub_date).toJSON().split('T')[0] }}</td>
                 <td class="table-primary">{{ data.department_name }}</td>
@@ -37,7 +38,7 @@
       </div>
     </div>
   </div>
-  <div v-for="data in mohwRSS" :key="data" class="modal fade" v-bind:id="data.news_id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div v-for="data in filteredTable" :key="data" class="modal fade" v-bind:id="data.news_id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -67,7 +68,37 @@ export default {
   data() {
     return {
       title: '衛生福利部RSS訊息(更新頻率：每小時)',
+      filter: '',
     };
+  },
+  computed: {
+    filteredTable() {
+      if (this.filter === '') {
+        return this.mohwRSS;
+      }
+      let results = {};
+      let dateJson = '';
+      for (var dateIndex in this.mohwRSS) {
+        dateJson = (new Date(dateIndex)).toJSON().split('T')[0];
+        if (dateJson.includes(this.filter)) {
+          results[dateIndex] = this.mohwRSS[dateIndex];
+          continue;
+        }
+        if (this.mohwRSS[dateIndex].title.includes(this.filter)) {
+          results[dateIndex] = this.mohwRSS[dateIndex];
+          continue;
+        }
+        if (this.mohwRSS[dateIndex].department_name.includes(this.filter)) {
+          results[dateIndex] = this.mohwRSS[dateIndex];
+          continue;
+        }
+        if (this.mohwRSS[dateIndex].description.includes(this.filter)) {
+          results[dateIndex] = this.mohwRSS[dateIndex];
+          continue;
+        }
+      }
+      return results;
+    },
   },
 }
 </script>
