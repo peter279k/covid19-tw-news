@@ -1,22 +1,4 @@
 <template>
-<header>
-  <!-- Fixed navbar -->
-  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/">{{ message }}</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav me-auto mb-2 mb-md-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/">{{ home }}</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-</header>
 <!-- Begin page content -->
 <main id="main-block" class="flex-shrink-0">
   <div class="container">
@@ -72,17 +54,19 @@
 </template>
 
 <script>
+import covid19Data from '../assets/covid19_data.json'
 
 export default {
-  name: 'COVID-19 Taiwan News',
-  props: {
-    message: String,
-    title: String,
-    filter: String,
-    home: String,
-    covid19Data: Object,
+  name: 'Index',
+  setup() {
+    return {
+      covid19Data,
+    };
   },
-  mounted() {
+  data() {
+    return {
+      title: '這是台灣COVID-19 訊息',
+    };
   },
 }
 </script>
