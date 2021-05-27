@@ -3,7 +3,19 @@
   <main id="main-block" class="flex-shrink-0">
   <div class="container">
     <h1 class="mt-5">{{ title }}</h1>
-    <input v-model="filter" type="search" class="form-control" id="input_keywords" placeholder="請輸入關鍵字"/>
+    <form class="row g-1">
+        <div class="col">
+          <input v-model="filter" type="search" class="form-control" id="input_keywords" placeholder="請輸入關鍵字"/>
+        </div>
+        <div class="col">
+          <div class="form-check">
+            <input v-model="checked" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+            <label class="form-check-label text-primary" for="flexCheckDefault">
+              篩選本土案例新聞
+            </label>
+          </div>
+        </div>
+    </form>
     <div class="row">
       <div id="covid-19-table" class="col">
         <table class="table">
@@ -69,30 +81,35 @@ export default {
     return {
       title: '衛生福利部RSS訊息(更新頻率：每小時)',
       filter: '',
+      checked: false,
     };
   },
   computed: {
     filteredTable() {
-      if (this.filter === '') {
+      let filteredKeyword = this.filter;
+      if (this.checked === true) {
+        filteredKeyword = '指揮中心公布新增';
+      }
+      if (filteredKeyword === '') {
         return this.mohwRSS;
       }
       let results = {};
       let dateJson = '';
       for (var dateIndex in this.mohwRSS) {
         dateJson = (new Date(dateIndex)).toJSON().split('T')[0];
-        if (dateJson.includes(this.filter)) {
+        if (dateJson.includes(filteredKeyword)) {
           results[dateIndex] = this.mohwRSS[dateIndex];
           continue;
         }
-        if (this.mohwRSS[dateIndex].title.includes(this.filter)) {
+        if (this.mohwRSS[dateIndex].title.includes(filteredKeyword)) {
           results[dateIndex] = this.mohwRSS[dateIndex];
           continue;
         }
-        if (this.mohwRSS[dateIndex].department_name.includes(this.filter)) {
+        if (this.mohwRSS[dateIndex].department_name.includes(filteredKeyword)) {
           results[dateIndex] = this.mohwRSS[dateIndex];
           continue;
         }
-        if (this.mohwRSS[dateIndex].description.includes(this.filter)) {
+        if (this.mohwRSS[dateIndex].description.includes(filteredKeyword)) {
           results[dateIndex] = this.mohwRSS[dateIndex];
           continue;
         }

@@ -23,7 +23,7 @@ for item in item_lists:
     news_id = item.getElementsByTagName('NewsID')[0].firstChild.nodeValue
     department_name = item.getElementsByTagName('DeptName')[0].firstChild.nodeValue
     pub_date = item.getElementsByTagName('pubDate')[0].firstChild.nodeValue
-    json_dict[pub_date] = {
+    json_dict[pub_date + news_id] = {
         'index': index,
         'news_id': 'modal_' + news_id,
         'modal_news_id': '#modal_' + news_id,
