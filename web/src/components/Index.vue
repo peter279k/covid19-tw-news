@@ -2,7 +2,8 @@
 <!-- Begin page content -->
 <main id="main-block" class="flex-shrink-0">
   <div class="container">
-    <h1 class="mt-5">{{ title }}</h1>
+    <h1 class="mt-5" v-html="title"></h1>
+    <h1 v-html="subTitle"></h1>
     <input v-model="filter" type="search" class="form-control" id="input_keywords" placeholder="請輸入關鍵字"/>
     <div class="row">
       <div id="covid-19-table" class="col">
@@ -66,7 +67,8 @@ export default {
   },
   data() {
     return {
-      title: '這是台灣COVID-19 訊息',
+      title: '這是台灣COVID-19 訊息<span class="text-danger">(暫停更新)</span>',
+      subTitle: '<a href="/mohwRSS">請使用衛生福利部RSS訊息</a>',
       filter: '',
     };
   },

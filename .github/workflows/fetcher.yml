@@ -19,8 +19,6 @@ jobs:
           python-version: '3.8'
       - name: Install Requirements
         run: pip install -r requirements.txt
-      - name: Update COVD-19 News
-        run: python Fetcher/Fetcher.py
       - name: Update COVD-19 Labs
         run: python Fetcher/LabFetcher.py
       - name: Update MOHW RSS News
