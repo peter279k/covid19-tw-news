@@ -1,3 +1,4 @@
+import os
 import json
 import requests
 from xml.dom import minidom
@@ -34,6 +35,19 @@ for item in item_lists:
         'department_name': department_name,
     }
     index -= 1
+
+original_json_text = ''
+if os.path.isfile(json_file_name) is True:
+    file_handler = open(json_file_name, 'r')
+    original_json_text = file_handler.read()
+    file_handler.close()
+
+if len(original_json_text) != 0:
+    original_json_object = json.loads(original_json_text)
+    for json_dict_key in list(json_dict.keys()):
+        if json_dict_key not in list(original_json_object.keys()):
+            original_json_object[json_dict_key] = dict(json_dict[json_dict_key])
+    json_dict = dict(original_json_object)
 
 json_text = json.dumps(json_dict)
 file_handler = open(json_file_name, 'w')

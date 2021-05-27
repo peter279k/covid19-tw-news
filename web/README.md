@@ -20,5 +20,11 @@ npm run build
 npm run lint
 ```
 
+### Editing .env file
+```
+cp .env.example .env
+# Then replace MAP_KEY with current OpenStreetMap key
+```
+
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
