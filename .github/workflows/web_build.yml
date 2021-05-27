@@ -20,6 +20,9 @@ jobs:
       - name: Install and Build 🔧
         working-directory: web
         run: |
+          cp .env.example .env
+          export VUE_APP_MAPKEY=${{ secrets.VUE_APP_MAPKEY }}
+          sed -i -e "s/MAP_KEY/$VUE_APP_MAPKEY/g" ./.env
           npm install
           npm run build
           cd dist
