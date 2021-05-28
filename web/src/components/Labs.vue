@@ -41,7 +41,11 @@
         </div>
       </div>
       <div class="row">
-        <div id="map" class="col"></div>
+        <div class="card">
+          <div class="card-body">
+            <div id="map" class="col"></div>
+          </div>
+        </div>
       </div>
     </div>
   </main>
@@ -188,7 +192,7 @@ export default {
 
 <style scoped>
   #map {
-    width: 100vw;
+    max-width: none;
     height: 100vh;
   }
 </style>

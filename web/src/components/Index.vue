@@ -67,7 +67,7 @@ export default {
   },
   data() {
     return {
-      title: '這是台灣COVID-19 訊息<span class="text-danger">(暫停更新)</span>',
+      title: '這是台灣COVID-19 訊息<span class="text-danger">(停止更新)</span>',
       subTitle: '<a href="/mohwRSS">請使用衛生福利部RSS訊息</a>',
       filter: '',
     };

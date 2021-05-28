@@ -86,16 +86,29 @@ export default {
   },
   computed: {
     filteredTable() {
+      let dateIndexes = Object.keys(mohwRSS);
+      let dateIndex = '';
+      let results = {};
+      let dateJson = '';
+
+      dateIndexes.sort((a, b) => {
+        return new Date(b) - new Date(a);
+      });
+
       let filteredKeyword = this.filter;
       if (this.checked === true) {
         filteredKeyword = '指揮中心公布新增';
       }
       if (filteredKeyword === '') {
-        return this.mohwRSS;
+        for (var index in dateIndexes) {
+          dateIndex = dateIndexes[index];
+          results[dateIndex] = mohwRSS[dateIndex];
+        }
+        return results;
       }
-      let results = {};
-      let dateJson = '';
-      for (var dateIndex in this.mohwRSS) {
+
+      for ( index in dateIndexes) {
+        dateIndex = dateIndexes[index];
         dateJson = (new Date(dateIndex)).toJSON().split('T')[0];
         if (dateJson.includes(filteredKeyword)) {
           results[dateIndex] = this.mohwRSS[dateIndex];
@@ -114,6 +127,7 @@ export default {
           continue;
         }
       }
+
       return results;
     },
   },
