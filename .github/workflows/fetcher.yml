@@ -23,6 +23,10 @@ jobs:
         run: python Fetcher/LabFetcher.py
       - name: Update MOHW RSS News
         run: python Fetcher/MohwRssFetcher.py
+      - name: Update COVID-19 global cases and deaths
+        run: python Fetcher/GlobalCasesFetcher.py
+      - name: Update TW COVID-19 cases
+        run: python Fetcher/DailyCovid19TW.py
       - name: Copy JSON files to assets folder
         run: cp datasets/*.json web/src/assets/
       - name: Commit and push if it changed

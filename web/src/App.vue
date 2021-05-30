@@ -3,7 +3,7 @@
   <!-- Fixed navbar -->
   <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/">COVID-19 台灣消息</a>
+      <a class="navbar-brand" href="/">COVID-19 臺灣消息</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -17,6 +17,13 @@
           </li>
           <li class="nav-item">
             <router-link class="nav-link" aria-current="page" :to="{ name: 'Labs'}">篩檢所地圖</router-link>
+          </li>
+          <li class="nav-item dropdown">
+            <a id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" class="nav-link dropdown-toggle" aria-current="page">資料統計</a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="/covid19CountryStats">各國家地區累積病例數與死亡數</a></li>
+              <!-- <li><a class="dropdown-item" href="/agstableDailyCov19">臺灣COVID-19各式資料統計</a></li> -->
+            </ul>
           </li>
           <li class="nav-item">
             <a href="https://github.com/peter279k/covid19-tw-news#data-sources-%E8%B3%87%E6%96%99%E4%BE%86%E6%BA%90" class="nav-link" target="_blank">資料來源</a>
