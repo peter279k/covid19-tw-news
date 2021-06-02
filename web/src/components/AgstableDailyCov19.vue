@@ -8,7 +8,7 @@
         <h3 class="text-info mt-6">{{ '本土確診總人數：' + String(sumOfLocalCases) }}</h3>
       </div>
       <div class="col">
-        <h3 class="text-info mt-6">{{ '境外確診總人數：' + String(sumOfImportedCases) }}</h3>
+        <h3 class="text-info mt-6">{{ '境外移入確診總人數：' + String(sumOfImportedCases) }}</h3>
       </div>
     </div>
     <div class="row">
