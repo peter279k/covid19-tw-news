@@ -22,7 +22,7 @@
             <a id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" class="nav-link dropdown-toggle" aria-current="page">資料統計</a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li><a class="dropdown-item" href="/covid19CountryStats">各國家地區累積病例數與死亡數</a></li>
-              <!-- <li><a class="dropdown-item" href="/agstableDailyCov19">臺灣COVID-19各式資料統計</a></li> -->
+              <li><a class="dropdown-item" href="/agstableDailyCov19">臺灣COVID-19各式資料統計</a></li>
             </ul>
           </li>
           <li class="nav-item">

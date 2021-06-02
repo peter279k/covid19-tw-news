@@ -22,9 +22,11 @@ def fetch_labs():
     response = requests.get(lab_url)
     response.encoding = 'utf-8'
     contents = response.text.split('\n')[1:-1]
+    counter = 0
+
     for content in contents:
         line = list(csv.reader([content]))[0]
-        lab_json[line[0]] = {
+        lab_json[str(counter)] = {
             'gency_code': line[0],
             'area': line[1],
             'county': line[2],
@@ -35,6 +37,7 @@ def fetch_labs():
             'longitude': line[7],
             'latitude': line[8],
         }
+        counter += 1
 
 fetch_labs()
 

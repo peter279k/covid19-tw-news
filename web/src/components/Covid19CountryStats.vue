@@ -123,32 +123,6 @@ function getDatasets(globalCasesDeaths) {
   return datasets;
 }
 
-function getMaxValue(globalCasesDeaths) {
-  let index = 1;
-  let cases = 0;
-  let deaths = 0;
-  let maxCases = 0;
-  let maxDeaths = 0;
-  for (index in globalCasesDeaths) {
-    if (globalCasesDeaths[index][0] === 'country_ch') {
-      continue;
-    }
-    cases = Number(globalCasesDeaths[String(index)][2].replace(/,/g, ''));
-    deaths = Number(globalCasesDeaths[String(index)][3].replace(/,/g, ''));
-    if (maxCases < cases) {
-      maxCases = cases;
-    }
-    if (maxDeaths < deaths) {
-      maxDeaths = deaths;
-    }
-  }
-
-  return {
-    'max_cases': maxCases,
-    'max_deaths': maxDeaths,
-  };
-}
-
 function getCountries(globalCasesDeaths) {
   let index = 1;
   let countries = {
@@ -177,16 +151,9 @@ export default {
       VueMultiselect,
   },
   setup() {
-    let maxValues = getMaxValue(globalCasesDeaths);
-    let maxCases = maxValues['max_cases'];
-    let maxDeaths = maxValues['max_deaths'];
-    let maxValue = (maxCases > maxDeaths ? maxCases : maxDeaths);
-
     const barChart = {
       type: 'bar',
       options: {
-          min: 0,
-          max: maxValue,
           responsive: true,
           plugins: {
             legend: {
@@ -195,8 +162,6 @@ export default {
           },
           scales: {
             y: {
-              min: 0,
-              max: maxValue,
               ticks: {
                 callback: function (value) {
                   return numeral(value).format('0,0');
@@ -216,8 +181,6 @@ export default {
       barChart.options.plugins.title = {
         display: true
       };
-      barChart.options.max = getMaxValue(filteredResults);
-      barChart.options.scales.y.max = getMaxValue(filteredResults);
       barChart.data.labels = getCountries(filteredResults)['countries_ch'];
       barChart.data.datasets = getDatasets(filteredResults);
       if (typeof chartRef.value.update !== 'undefined') {
@@ -242,17 +205,17 @@ export default {
       maxCases: 0,
       maxDeaths: 0,
       selected: null,
-      labTableButton: '顯示篩檢所列表',
+      labTableButton: '顯示各國列表',
     };
   },
   mounted() {
   },
   methods: {
     collapseButton(event) {
-      if (event.target.text === '顯示篩檢所列表') {
-        this.labTableButton = '關閉篩檢所列表';
+      if (event.target.text === '顯示各國列表') {
+        this.labTableButton = '關閉各國列表';
       } else {
-        this.labTableButton = '顯示篩檢所列表';
+        this.labTableButton = '顯示各國列表';
       }
     },
   },
