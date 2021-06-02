@@ -350,6 +350,12 @@ function countyOfLocalCases() {
 function getMonthLocalCaseBarLineChart() {
   let monthOfLocalCasesObj = monthOfLocalCases();
   let monthOfLocalCaseValues = Object.values(monthOfLocalCasesObj);
+  let monthOfLocalCasesObjKeys = Object.keys(monthOfLocalCasesObj);
+  monthOfLocalCasesObjKeys = monthOfLocalCasesObjKeys.map((value) => {
+    let string = String(value);
+
+    return string.substring(0, 4) + '-' + string.substring(4);
+  });
 
   return {
     type: 'line',
@@ -371,7 +377,7 @@ function getMonthLocalCaseBarLineChart() {
           stack: 'combined',
         }
       ],
-      labels: Object.keys(monthOfLocalCasesObj),
+      labels: monthOfLocalCasesObjKeys,
     },
     options: {
       responsive: true,
@@ -396,6 +402,12 @@ function getMonthLocalCaseBarLineChart() {
 function getMonthImportedCaseBarLineChart() {
   let monthOfImportedCasesObj = monthOfImportedCases();
   let monthOfImportedCaseValues = Object.values(monthOfImportedCasesObj);
+  let monthOfImportedCasesObjKeys = Object.keys(monthOfImportedCasesObj);
+  monthOfImportedCasesObjKeys = monthOfImportedCasesObjKeys.map((value) => {
+    let string = String(value);
+
+    return string.substring(0, 4) + '-' + string.substring(4);
+  });
 
   return {
     type: 'line',
@@ -417,7 +429,7 @@ function getMonthImportedCaseBarLineChart() {
           stack: 'combined',
         }
       ],
-      labels: Object.keys(monthOfImportedCasesObj),
+      labels: monthOfImportedCasesObjKeys,
     },
     options: {
       responsive: true,
