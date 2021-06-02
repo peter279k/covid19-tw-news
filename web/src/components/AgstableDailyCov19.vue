@@ -466,8 +466,8 @@ function getImportedCasesPieChart() {
         label: '全國境外移入確診人數性別比',
         data: [importedMaleRate, importedFemaleRate],
         backgroundColor: [
-          'rgb(255, 99, 132)',
           'rgb(54, 162, 235)',
+          'rgb(255, 99, 132)',
         ],
         hoverOffset: 4
       }],
@@ -502,8 +502,8 @@ function getLocalCasesPieChart() {
         label: '全國本土病例確診人數性別比',
         data: [localCasesMaleRate, localCasesFemaleRate],
         backgroundColor: [
-          'rgb(255, 99, 132)',
           'rgb(54, 162, 235)',
+          'rgb(255, 99, 132)',
         ],
         hoverOffset: 4
       }],
@@ -538,8 +538,8 @@ function getAllCasesPieChart() {
         label: '全國確診人數性別比',
         data: [allCasesMaleRate, allCasesFemaleRate],
         backgroundColor: [
-          'rgb(255, 99, 132)',
           'rgb(54, 162, 235)',
+          'rgb(255, 99, 132)',
         ],
         hoverOffset: 4
       }],
