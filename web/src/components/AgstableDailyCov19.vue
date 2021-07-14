@@ -272,6 +272,7 @@ function monthOfImportedCases() {
     }
     county = DayConfirmationAgeCountyGender19CoV[caseIndex][2];
     monthKey = DayConfirmationAgeCountyGender19CoV[caseIndex][1];
+    monthKey = monthKey.replace(/\//g, '');
     monthKey = monthKey.substring(0, 6);
     monthKeys = Object.keys(importedCasesOfMonth);
     if (county !== '空值') {
@@ -302,6 +303,7 @@ function monthOfLocalCases() {
     }
     county = DayConfirmationAgeCountyGender19CoV[caseIndex][2];
     monthKey = DayConfirmationAgeCountyGender19CoV[caseIndex][1];
+    monthKey = monthKey.replace(/\//g, '');
     monthKey = monthKey.substring(0, 6);
     monthKeys = Object.keys(localCasesOfMonth);
     if (county === '空值') {
