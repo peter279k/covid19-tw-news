@@ -5,18 +5,18 @@
     <h1 class="mt-5">{{ title }}</h1>
     <div class="row">
       <div class="col">
-        <h3 class="text-info mt-6">{{ '本土確診總人數：' + String(sumOfLocalCases) }}</h3>
+        <h3 class="text-info mt-6">{{ '境外移入確診總人數：' + String(sumOfImportedCases) }}</h3>
       </div>
       <div class="col">
-        <h3 class="text-info mt-6">{{ '境外移入確診總人數：' + String(sumOfImportedCases) }}</h3>
+        <h3 class="text-info mt-6">{{ '本土確診總人數：' + String(sumOfLocalCases) }}</h3>
       </div>
     </div>
     <div class="row">
       <div class="col">
-        <vue3-chart-js v-bind="{ ...monthOfLocalCaseBarLineChart }" />
+        <vue3-chart-js v-bind="{ ...monthOfImportedCaseBarLineChart }" />
       </div>
       <div class="col">
-        <vue3-chart-js v-bind="{ ...monthOfImportedCaseBarLineChart }" />
+        <vue3-chart-js v-bind="{ ...monthOfLocalCaseBarLineChart }" />
       </div>
     </div>
     <div class="row">
@@ -28,6 +28,17 @@
       </div>
       <div class="col">
         <vue3-chart-js v-bind="{ ...allCasesPieChart }" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <vue3-chart-js v-bind="{ ...importedCasesOfAgeBarChart }" />
+      </div>
+      <div class="col">
+        <vue3-chart-js v-bind="{ ...localCasesOfAgeBarChart }" />
+      </div>
+      <div class="col">
+        <vue3-chart-js v-bind="{ ...allCasesOfAgeBarChart }" />
       </div>
     </div>
     <div class="row">
@@ -58,11 +69,33 @@
 import Vue3ChartJs from '@j-t-mcc/vue3-chartjs'
 import DayConfirmationAgeCountyGender19CoV from '../assets/DayConfirmationAgeCountyGender19CoV.json'
 
-function getRandomHexColors(counter) {
+function getRandomHexColors(counter, isUnique=false) {
   let colors = new Array(counter);
   let randomHexColor = String('#' + Math.floor(Math.random()*16777215).toString(16));
 
+  if (isUnique) {
+    colors.fill('');
+    return colors.map((value) => {
+      value = String('#' + Math.floor(Math.random()*16777215).toString(16));
+      value = hexToRgb(value);
+
+      return 'rgb(' + value.r + ',' + value.g + ',' + value.b + ')';
+    });
+  }
+
   return colors.fill(randomHexColor);
+}
+
+function hexToRgb(hex) {
+  if (hex.length !== 7) {
+    hex += hex[hex.length-1];
+  }
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  } : null;
 }
 
 function getSumOfImportedCases() {
@@ -561,10 +594,14 @@ function getAllCasesPieChart() {
   };
 }
 
-function getImportedCasesAgeRangeBarChart() {
+function getImportedCasesAgeRangeBarChart(isRatio=false) {
   let ageRangeOfCaseNumbers = getAgeRangesOfCasesNumbers();
   let ageRangeImportedCases = ageRangeOfCaseNumbers[0];
+  let ageRangeImportedCasesOfSum = Object.values(ageRangeImportedCases).reduce((current, next) => {
+    return current + next;
+  });
   let ageRangeImportedCasesValues = [];
+  let ageRangeImportedCasesRatioValues = [];
   let ageRanges = [
     '0',
     '1',
@@ -589,8 +626,37 @@ function getImportedCasesAgeRangeBarChart() {
   for (let index in ageRanges) {
     if (ageRangeImportedCases[ageRanges[index]]) {
       ageRangeImportedCasesValues.push(ageRangeImportedCases[ageRanges[index]]);
+      ageRangeImportedCasesRatioValues.push(ageRangeImportedCases[ageRanges[index]] / ageRangeImportedCasesOfSum * 100);
     } else {
       ageRangeImportedCasesValues.push(0);
+      ageRangeImportedCasesRatioValues.push(0.0);
+    }
+  }
+
+  if (isRatio) {
+    return {
+      type: 'pie',
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: '全國境外移入確診人數年齡比(%)',
+          },
+        } ,
+      },
+      data: {
+        labels: ageRanges.map((value) => { return value + '歲(%)'; }),
+        datasets: [{
+          label: '全國境外移入確診人數年齡比(%)',
+          data: ageRangeImportedCasesRatioValues,
+          backgroundColor: getRandomHexColors(ageRanges.length, true),
+          hoverOffset: 4
+        }],
+      },
     }
   }
 
@@ -625,10 +691,14 @@ function getImportedCasesAgeRangeBarChart() {
   };
 }
 
-function getLocalCasesAgeRangeBarChart() {
+function getLocalCasesAgeRangeBarChart(isRatio=false) {
   let ageRangeOfCaseNumbers = getAgeRangesOfCasesNumbers();
   let ageRangeLocalCasesValues = [];
+  let ageRangeLocalCasesRatioValues = [];
   let ageRangeLocalCases = ageRangeOfCaseNumbers[1];
+  let ageRangeLocalCasesOfSum = Object.values(ageRangeLocalCases).reduce((current, next) => {
+    return current + next;
+  });
   let ageRanges = [
     '0',
     '1',
@@ -656,8 +726,37 @@ function getLocalCasesAgeRangeBarChart() {
     value = ageRangeLocalCases[ageRanges[index]];
     if (value) {
       ageRangeLocalCasesValues.push(value);
+      ageRangeLocalCasesRatioValues.push(value / ageRangeLocalCasesOfSum * 100);
     } else {
       ageRangeLocalCasesValues.push(0);
+      ageRangeLocalCasesRatioValues.push(0.0);
+    }
+  }
+
+  if (isRatio) {
+    return {
+      type: 'pie',
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: '全國本土確診人數年齡比(%)',
+          },
+        } ,
+      },
+      data: {
+        labels: ageRanges.map((value) => { return value + '歲(%)'; }),
+        datasets: [{
+          label: '全國本土確診人數年齡比(%)',
+          data: ageRangeLocalCasesRatioValues,
+          backgroundColor: getRandomHexColors(ageRanges.length, true),
+          hoverOffset: 4
+        }],
+      },
     }
   }
 
@@ -692,10 +791,15 @@ function getLocalCasesAgeRangeBarChart() {
   };
 }
 
-function getAllCasesAgeRangeBarChart() {
+function getAllCasesAgeRangeBarChart(isRatio=false) {
   let ageRangeOfCaseNumbers = getAgeRangesOfCasesNumbers();
   let ageRangeAllCasesValues = [];
+  let ageRangeAllCasesRatioValues = [];
   let ageRangeAllCases = ageRangeOfCaseNumbers[2];
+  let ageRangeAllCasesOfSum = Object.values(ageRangeAllCases).reduce((current, next) => {
+    return current + next;
+  });
+
   let ageRanges = [
     '0',
     '1',
@@ -722,8 +826,37 @@ function getAllCasesAgeRangeBarChart() {
     value = ageRangeAllCases[ageRanges[index]];
     if (value) {
       ageRangeAllCasesValues.push(value);
+      ageRangeAllCasesRatioValues.push(value / ageRangeAllCasesOfSum * 100);
     } else {
       ageRangeAllCasesValues.push(0);
+      ageRangeAllCasesRatioValues.push(0.0);
+    }
+  }
+
+  if (isRatio) {
+    return {
+      type: 'pie',
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: '全國確診總人數年齡比(%)',
+          },
+        } ,
+      },
+      data: {
+        labels: ageRanges.map((value) => { return value + '歲(%)'; }),
+        datasets: [{
+          label: '全國確診總人數年齡比(%)',
+          data: ageRangeAllCasesRatioValues,
+          backgroundColor: getRandomHexColors(ageRanges.length, true),
+          hoverOffset: 4
+        }],
+      },
     }
   }
 
@@ -847,6 +980,10 @@ export default {
 
     const countyLocalCasesBarChart = getCountyLocalCasesBarChart();
 
+    const importedCasesOfAgeBarChart = getImportedCasesAgeRangeBarChart(true);
+    const localCasesOfAgeBarChart = getLocalCasesAgeRangeBarChart(true);
+    const allCasesOfAgeBarChart = getAllCasesAgeRangeBarChart(true);
+
     return {
       monthOfLocalCaseBarLineChart,
       monthOfImportedCaseBarLineChart,
@@ -856,6 +993,9 @@ export default {
       importedCasesAgeRangeBarChart,
       localCasesAgeRangeBarChart,
       allCasesAgeRangeBarChart,
+      importedCasesOfAgeBarChart,
+      localCasesOfAgeBarChart,
+      allCasesOfAgeBarChart,
       countyLocalCasesBarChart,
     };
   },
