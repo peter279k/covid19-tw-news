@@ -37,6 +37,13 @@
                 <td class="table-primary"><button type="button" class="btn btn-primary" data-bs-toggle="modal" v-bind:data-bs-target="data.modal_news_id">點我</button></td>
                 <td class="table-primary"><a target="_blank" v-bind:href="data.link" class="link-info">點我</a></td>
               </template>
+              <template v-else-if="data.title.substring(0, 2) === '新增'">
+                <td class="table-primary">{{ new Date(data.pub_date).toJSON().split('T')[0] }}</td>
+                <td class="table-primary">{{ data.department_name }}</td>
+                <td class="table-primary">{{ data.title.length > 38 ? data.title.substring(0, 35) + '...' : data.title }}</td>
+                <td class="table-primary"><button type="button" class="btn btn-primary" data-bs-toggle="modal" v-bind:data-bs-target="data.modal_news_id">點我</button></td>
+                <td class="table-primary"><a target="_blank" v-bind:href="data.link" class="link-info">點我</a></td>
+              </template>
               <template v-else>
                 <td>{{ (new Date(data.pub_date)).toJSON().split('T')[0] }}</td>
                 <td>{{ data.department_name }}</td>
@@ -107,7 +114,7 @@ export default {
         return results;
       }
 
-      for ( index in dateIndexes) {
+      for (index in dateIndexes) {
         dateIndex = dateIndexes[index];
         dateJson = (new Date(dateIndex)).toJSON().split('T')[0];
         if (dateJson.includes(filteredKeyword)) {
@@ -115,6 +122,10 @@ export default {
           continue;
         }
         if (this.mohwRSS[dateIndex].title.includes(filteredKeyword)) {
+          results[dateIndex] = this.mohwRSS[dateIndex];
+          continue;
+        }
+        if (filteredKeyword === '指揮中心公布新增' && this.mohwRSS[dateIndex].title.substring(0, 2) === '新增') {
           results[dateIndex] = this.mohwRSS[dateIndex];
           continue;
         }
