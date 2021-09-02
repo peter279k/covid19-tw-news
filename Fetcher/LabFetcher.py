@@ -19,7 +19,7 @@ json_keys = [
 ]
 
 def fetch_labs():
-    response = requests.get(lab_url)
+    response = requests.get(lab_url, verify=False)
     response.encoding = 'big5-hkscs'
     contents = response.text.split('\n')[1:-1]
     counter = 0
