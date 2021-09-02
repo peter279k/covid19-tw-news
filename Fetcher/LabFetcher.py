@@ -3,7 +3,7 @@ import json
 import requests
 
 
-lab_url = 'http://od.cdc.gov.tw/icb/%E6%8C%87%E5%AE%9A%E6%8E%A1%E6%AA%A2%E9%86%AB%E9%99%A2%E6%B8%85%E5%96%AE.csv'
+lab_url = 'https://od.cdc.gov.tw/icb/%E6%8C%87%E5%AE%9A%E6%8E%A1%E6%AA%A2%E9%86%AB%E9%99%A2%E6%B8%85%E5%96%AE.csv'
 lab_json_path = './datasets/covid19_labs.json'
 lab_json = {}
 json_keys = [

@@ -6,7 +6,7 @@ import requests
 url = 'https://od.cdc.gov.tw/eic/covid19/covid19_global_cases_and_deaths.csv'
 
 def global_cases_fetcher():
-    response = requests.get(url)
+    response = requests.get(url, verify=False)
     response.encoding = 'utf-8'
     csv_string = response.text
     csv_rows = csv_string.split('\n')

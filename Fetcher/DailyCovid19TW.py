@@ -6,7 +6,7 @@ import requests
 url = 'https://od.cdc.gov.tw/eic/Day_Confirmation_Age_County_Gender_19CoV.csv'
 
 def fetch_daily_covid19():
-    response = requests.get(url)
+    response = requests.get(url, verify=False)
     response.encoding = 'utf-8'
     csv_string = response.text
     csv_rows = csv_string.split('\n')[0:-1]
