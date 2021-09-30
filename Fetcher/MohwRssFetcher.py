@@ -7,7 +7,7 @@ rss_url = 'https://www.mohw.gov.tw/rss-16-1.html'
 json_file_name = './datasets/mohw_rss.json'
 
 def fetch_mohw_rss():
-    response = requests.get(rss_url)
+    response = requests.get(rss_url, verify=False)
     response.encoding = 'urf-8'
     return response.text
 
