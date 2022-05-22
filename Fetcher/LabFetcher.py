@@ -29,12 +29,11 @@ def fetch_labs():
     for content in contents:
         line = list(csv.reader([content]))[0]
         if len(line) < 9:
-            missed += ','.join(line).replace('"', '').replace('\\', '')
             if missed_count == 9:
                 missed += '\n'
                 missed_count = 0
-            else:
-                missed_count += len(line)
+            missed += ','.join(line)
+            missed_count += len(line)
             continue
         lab_json[str(counter)] = {
             'gency_code': line[0],
@@ -60,7 +59,7 @@ def fetch_labs():
             'admin_district': line[3],
             'agency_name': line[4],
             'address': line[5],
-            'phone_number': line[6],
+            'phone_number': line[6].replace('"', '').replace('\\', ''),
             'longitude': line[7],
             'latitude': line[8],
         }
