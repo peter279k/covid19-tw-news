@@ -26,6 +26,9 @@ def fetch_labs():
 
     for content in contents:
         line = list(csv.reader([content]))[0]
+        if len(line) < 9:
+            for value in list(range(1, 9-len(line)+1)):
+                line.append('N/A')
         lab_json[str(counter)] = {
             'gency_code': line[0],
             'area': line[1],
