@@ -58,7 +58,7 @@ def fetch_labs():
             'admin_district': line[3],
             'agency_name': line[4],
             'address': line[5],
-            'phone_number': line[6],
+            'phone_number': line[6].replace('\\', ''),
             'longitude': line[7],
             'latitude': line[8],
         }
