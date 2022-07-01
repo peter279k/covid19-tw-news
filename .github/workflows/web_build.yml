@@ -21,6 +21,7 @@ jobs:
         working-directory: web
         run: |
           cp .env.example .env
+          export NODE_OPTIONS="--max-old-space-size=8192"
           export VUE_APP_MAPKEY=${{ secrets.VUE_APP_MAPKEY }}
           sed -i -e "s/MAP_KEY/$VUE_APP_MAPKEY/g" ./.env
           npm install
