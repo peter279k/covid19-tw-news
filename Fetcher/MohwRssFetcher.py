@@ -3,8 +3,15 @@ import json
 import requests
 from xml.dom import minidom
 
+
 rss_url = 'https://www.mohw.gov.tw/rss-16-1.html'
+
 json_file_name = './datasets/mohw_rss.json'
+response = requests.get('https://github.com/peter279k/covid19-tw-news/raw/master/datasets/mohw_rss.json')
+file_handler = open(json_file_name, 'w')
+file_handler.write(response.text)
+file_handler.close()
+
 
 def fetch_mohw_rss():
     response = requests.get(rss_url, verify=False)
