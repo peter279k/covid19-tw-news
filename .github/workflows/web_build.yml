@@ -17,6 +17,14 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Download JSON files to assets folder
+        run: |
+          wget -O web/src/assets/DayConfirmationAgeCountyGender19CoV.json https://github.com/peter279k/covid19-tw-news/raw/master/datasets/DayConfirmationAgeCountyGender19CoV.json
+          wget -O web/src/assets/covid19_data.json https://github.com/peter279k/covid19-tw-news/blob/master/datasets/covid19_data.json
+          wget -O web/src/assets/covid19_global_cases_and_deaths.json https://github.com/peter279k/covid19-tw-news/raw/master/datasets/covid19_global_cases_and_deaths.json
+          wget -O web/src/assets/covid19_labs.json https://github.com/peter279k/covid19-tw-news/blob/raw/datasets/covid19_labs.json
+          wget -O web/src/assets/mohw_rss.json https://github.com/peter279k/covid19-tw-news/raw/master/datasets/mohw_rss.json
+
       - name: Install and Build 🔧
         working-directory: web
         run: |

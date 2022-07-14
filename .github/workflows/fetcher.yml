@@ -27,8 +27,6 @@ jobs:
         run: python Fetcher/GlobalCasesFetcher.py
       - name: Update COVID-19 TW datasets
         run: python Fetcher/DailyCovid19TW.py
-      - name: Copy JSON files to assets folder
-        run: cp datasets/*.json web/src/assets/
       - name: Commit and push if it changed
         run: |
           git config user.name "peter279k"
