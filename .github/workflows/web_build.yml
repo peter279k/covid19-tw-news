@@ -41,10 +41,7 @@ jobs:
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          known_hosts: unnecessary
-
-      - name: Adding the Known Hosts
-        run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
 
       - name: Deploy to remote server via rsync 🚀
         run: rsync -avz ./web/dist/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/covid19-tw-news.peterli.website/dist
