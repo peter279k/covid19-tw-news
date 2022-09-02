@@ -16,7 +16,14 @@ jobs:
         uses: actions/checkout@v2.3.1
         with:
           persist-credentials: false
-          lfs: true
+
+      - name: Download JSON files to assets folder
+        run: |
+          wget --quiet -O web/src/assets/DayConfirmationAgeCountyGender19CoV.json https://github.com/peter279k/covid19-tw-news/raw/master/datasets/DayConfirmationAgeCountyGender19CoV.json
+          wget --quiet -O web/src/assets/covid19_data.json https://github.com/peter279k/covid19-tw-news/raw/master/datasets/covid19_data.json
+          wget --quiet -O web/src/assets/covid19_global_cases_and_deaths.json https://github.com/peter279k/covid19-tw-news/raw/master/datasets/covid19_global_cases_and_deaths.json
+          wget --quiet -O web/src/assets/covid19_labs.json https://github.com/peter279k/covid19-tw-news/raw/master/datasets/covid19_labs.json
+          wget --quiet -O web/src/assets/mohw_rss.json https://github.com/peter279k/covid19-tw-news/raw/master/datasets/mohw_rss.json
 
       - name: Install and Build 🔧
         working-directory: web
