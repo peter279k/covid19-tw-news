@@ -45,5 +45,6 @@ jobs:
           GIT_CONFIG_EMAIL: "peter279k@gmail.com"
           SINGLE_COMMIT: true
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          LFS: true
           BRANCH: gh-pages
           FOLDER: web//dist
