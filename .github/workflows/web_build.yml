@@ -37,13 +37,13 @@ jobs:
           cd dist
           cp index.html 404.html
 
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@3.6.2
+      - name: Install the SSH key
+        uses: shimataro/ssh-key-action@v2
         with:
-          GIT_CONFIG_NAME: "peter279k"
-          GIT_CONFIG_EMAIL: "peter279k@gmail.com"
-          SINGLE_COMMIT: true
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
-          LFS: true
-          BRANCH: gh-pages
-          FOLDER: web//dist
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Adding the Known Hosts
+        run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to remote server via rsync 🚀
+        run: rsync -avz ./web/dist/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/covid19-tw-news.peterli.website/dist
